@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Save As HTML File</title>
+  <meta name="robots" content="noindex">
+  <style>
+/******************************************************************
+Site Name: Remindrs
+Author: Brandon Brule
+
+Stylesheet: Main Stylesheet
+******************************************************************/
+.clearfix:after, .quick-utility-links:after {
+  content: "";
+  display: table;
+  clear: both; }
+
+html {
+  box-sizing: border-box; }
+
+* {
+  margin: 0;
+  padding: 0; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+::-moz-selection {
+  background-color: yellow;
+  color: #000; }
+
+::selection {
+  background-color: yellow;
+  color: #000; }
+
+html::-webkit-scrollbar {
+  display: none; }
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 2%;
+  background-color: rgba(241, 243, 242, 0.95);
+  color: #3d3d3d;
+  font-size: 1em;
+  position: relative;
+  -webkit-text-size-adjust: 100%; }
+
+button, a {
+  color: #3d3d3d;
+  text-decoration: none; }
+  button:hover, a:hover {
+    text-decoration: underline; }
+
+input {
+  width: 100%;
+  padding: 0.35em;
+  border: none; }
+
+textarea {
+  width: 100%;
+  height: 50px;
+  display: block;
+  border: none;
+  resize: none;
+  box-sizing: border-box;
+  font-size: 1.35em;
+  padding: 0;
+  margin: 0; }
+  textarea:focus {
+    outline: none; }
+
+
+.button {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-weight: 100;
+  text-decoration: none;
+  line-height: 1;
+  font-size: 1em; }
+  .button:hover, .button:active {
+    cursor: pointer;
+    text-decoration: underline; }
+
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  opacity: 1;
+  transition: 0.15s opacity; }
+
+.notes-container {
+  max-width: 50em;
+  margin: 0 auto;
+  position: relative; }
+
+.note {
+  margin: 8em 0 8em 0;
+  background: rgba(241, 243, 242, 0.95);
+  padding: 40px 50px 80px 50px; }
+
+.title {
+  font-size: 2.30em;
+  margin-bottom: 0.85em;
+  background: none;
+  line-height: 1.65;
+  font-family: 'Equity-Text-B', serif;
+  text-align: justify; }
+
+.message {
+  line-height: 1.5;
+  font-weight: 100;
+  background: none;
+  font-family: Calibri, Arial, helvetica, sans-serif;
+  text-align: justify; }
+
+.last-edited {
+  background: none;
+  border: none;
+  float: left;
+  opacity: .55;
+  width: auto; }
+
+#save{
+  position:relative;
+  z-index:20;
+}
+  </style>
+</head>
+
+<body>
+  <button id="save">Save</button>
+  <div id="background" class="background-image" style="background: url(http://www.ohthebooks.com/blog/wp-content/uploads/infinity-interior.jpg) 50% 50% / cover no-repeat fixed;"></div>
+  <div class="notes-container">
+    <form id="note" class="note" onsubmit="return false">
+      <textarea id="title" class="title"></textarea>
+      <textarea id="message" class="message"></textarea>
+    </form>
+  </div>
+
+<script src='http://brandonbrule.github.io/itsa/js/itsa.js'></script>
+
+<script>
+var saveTextAsFile = function(string, filename){
+    
+    var textFileAsBlob = new Blob([string], {type:'text/html'});
+    var downloadLink = document.createElement("a");
+    
+    downloadLink.download = filename;
+    downloadLink.innerHTML = "Download File";
+    
+    if (window.webkitURL !== null){
+      // Chrome allows the link to be clicked
+      // without actually adding it to the DOM.
+      downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+    } else {
+      // Firefox requires the link to be added to the DOM
+      // before it can be clicked.
+      downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+      downloadLink.onclick = function(){ document.body.removeChild(event.target); };
+      document.body.appendChild(downloadLink);
+    }
+
+    downloadLink.click();
+    
+};
+
+function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+};
+
+
+var background = function(){
+  var background = document.getElementById('background').getAttribute('style');
+  background = escapeHtml(background);
+  return background;
+};
+
+var Styles = function(){
+  var style_tag = document.getElementsByTagName('style')[0].innerHTML;
+    style_tag = escapeHtml(style_tag);
+
+  return style_tag;
+};
+
+var FormatText = (function(){
+  var init = function(){
+    its.a('test');
+  };
+  return{
+    init: init
+  };
+})();
+
+FormatText.init();
+
+
+document.getElementById('save').addEventListener('click', function(e){
+  var title = document.getElementById('title').value;
+  var message = document.getElementById('message').value;
+  var url = title.replace(/\s+/g, '-').toLowerCase();
+  var testStr = [
+    '<!DOCTYPE html>',
+    '<head>',
+      '<title>' + title + '</title>',
+      '<style>' + Styles() + '</style>',
+    '</head>',
+    '<body>',
+    '<div class="background-image" style="' + background() + '"></div>',
+    '<div class="notes-container">',
+      '<div class="note">',
+        '<h1 class="title">' + title + '</h1>',
+        '<section class="message">' + message + '</section>',
+      '</div>',
+    '</div>',
+    '</body/>'
+  ].join('');
+
+  saveTextAsFile(testStr, url);
+});
+
+</script>
+
+
+
+</body>
+
+
+</html>
