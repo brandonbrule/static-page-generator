@@ -61,7 +61,7 @@ var ExportNotes = (function(){
 		].join('');
 
 		saveTextAsFile(testStr, url);
-
+		
 		return ;
 	};
 
@@ -69,9 +69,6 @@ var ExportNotes = (function(){
     init: init
   };
 })();
-
-
-
 
 
 // Save Button
