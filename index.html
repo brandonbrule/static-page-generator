@@ -99,25 +99,30 @@ textarea {
   margin: 0 auto;
   position: relative; }
 
-.note {
+.content-container {
   margin: 8em 0 8em 0;
   background: rgba(241, 243, 242, 0.95);
   padding: 40px 50px 80px 50px; }
 
-.title {
+.title, .subtitle {
   font-size: 2.30em;
-  margin-bottom: 0.85em;
+  margin: 0.85em 0;
   background: none;
   line-height: 1.65;
   font-family: 'Equity-Text-B', serif;
-  text-align: justify; }
+  text-align: justify; 
+}
+.subtitle {
+  font-size: 1.50em; 
+}
 
 .message {
   line-height: 1.5;
   font-weight: 100;
   background: none;
   font-family: Calibri, Arial, helvetica, sans-serif;
-  text-align: justify; }
+  text-align: justify; 
+}
 
 .last-edited {
   background: none;
@@ -126,20 +131,30 @@ textarea {
   opacity: .55;
   width: auto; }
 
-#save{
-  position:relative;
-  z-index:20;
-}
+  </style>
+
+  <style>
+  #layout-controls{
+    position:relative;
+    z-index: 10;
+  }
   </style>
 </head>
 
 <body>
-  <button id="save">Save</button>
+  
+  <div id="layout-controls">
+    <button control="title">New Title</button>
+    <button control="subtitle">New SubTitle</button>
+    <button control="message">New Section</button>
+    <button id="save">Save</button>
+  </div>
+
   <div id="background" class="background-image" style="background: url(http://www.ohthebooks.com/blog/wp-content/uploads/infinity-interior.jpg) 50% 50% / cover no-repeat fixed;"></div>
   <div class="notes-container">
-    <form id="note" class="note" onsubmit="return false">
-      <textarea id="title" class="title"></textarea>
-      <textarea id="message" class="message"></textarea>
+    <form id="content-container" view="content-container" class="content-container" onsubmit="return false">
+      <textarea id="title" view="title" class="title">Test Title</textarea>
+      <textarea id="message" view="message" class="message">Test Message</textarea>
     </form>
   </div>
 
@@ -190,16 +205,43 @@ var Styles = function(){
   return style_tag;
 };
 
-var FormatText = (function(){
+var ExportNotes = (function(){
+
+  var getContents = function(content_container){
+    var content_blocks = content_container.getElementsByTagName('textarea');
+    var blocks_arr = [];
+    
+    [].forEach.call(content_blocks, function(content_block){
+      var view_type = content_block.getAttribute('view');
+
+      if (view_type === 'title'){
+        blocks_arr.push( '<h1 class="title">' + content_block.value + '</h1>' );
+      } else if (view_type === 'subtitle'){
+        blocks_arr.push( '<h2 class="subtitle">' + content_block.value + '</h2>' );
+      } else if (view_type === 'message'){
+        blocks_arr.push( '<div class="message">' + content_block.value + '</div>' );
+      }
+    });
+
+    return blocks_arr.join('');
+  };
+
   var init = function(){
-    its.a('test');
+    var content_containers = document.querySelectorAll('[view="content-container"]');
+    var arr = [];
+    [].forEach.call(content_containers, function(content_container){
+      arr.push( '<div class="content-container">' + getContents(content_container) + '</div>' );
+    });
+
+    return arr.join('');
+
   };
   return{
     init: init
   };
 })();
 
-FormatText.init();
+
 
 
 document.getElementById('save').addEventListener('click', function(e){
@@ -215,10 +257,7 @@ document.getElementById('save').addEventListener('click', function(e){
     '<body>',
     '<div class="background-image" style="' + background() + '"></div>',
     '<div class="notes-container">',
-      '<div class="note">',
-        '<h1 class="title">' + title + '</h1>',
-        '<section class="message">' + message + '</section>',
-      '</div>',
+      ExportNotes.init(),
     '</div>',
     '</body/>'
   ].join('');
@@ -229,7 +268,7 @@ document.getElementById('save').addEventListener('click', function(e){
 </script>
 
 
-
+<script src="js/layout-controls.js"></script>
 </body>
 
 
