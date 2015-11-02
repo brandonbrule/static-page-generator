@@ -1,9 +1,0 @@
-var layoutControls = ( function(){
-	var init = function(){
-		its.a('test');
-	};
-
-	return {
-		init: init
-	}
-})();
