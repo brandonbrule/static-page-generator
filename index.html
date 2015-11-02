@@ -153,8 +153,6 @@ textarea {
   <div id="background" class="background-image" style="background: url(http://www.ohthebooks.com/blog/wp-content/uploads/infinity-interior.jpg) 50% 50% / cover no-repeat fixed;"></div>
   <div class="notes-container">
     <form id="content-container" view="content-container" class="content-container" onsubmit="return false">
-      <textarea id="title" view="title" class="title">Test Title</textarea>
-      <textarea id="message" view="message" class="message">Test Message</textarea>
     </form>
   </div>
 
@@ -245,8 +243,7 @@ var ExportNotes = (function(){
 
 
 document.getElementById('save').addEventListener('click', function(e){
-  var title = document.getElementById('title').value;
-  var message = document.getElementById('message').value;
+  var title = document.querySelector('[view="title"]').value;
   var url = title.replace(/\s+/g, '-').toLowerCase();
   var testStr = [
     '<!DOCTYPE html>',
@@ -256,9 +253,7 @@ document.getElementById('save').addEventListener('click', function(e){
     '</head>',
     '<body>',
     '<div class="background-image" style="' + background() + '"></div>',
-    '<div class="notes-container">',
       ExportNotes.init(),
-    '</div>',
     '</body/>'
   ].join('');
 
