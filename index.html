@@ -5,13 +5,9 @@
   <meta charset="UTF-8">
   <title>Save As HTML File</title>
   <meta name="robots" content="noindex">
-  <style>
-/******************************************************************
-Site Name: Remindrs
-Author: Brandon Brule
 
-Stylesheet: Main Stylesheet
-******************************************************************/
+  <!-- New Site Styles -->
+  <style>
 .clearfix:after, .quick-utility-links:after {
   content: "";
   display: table;
@@ -40,7 +36,6 @@ html::-webkit-scrollbar {
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  padding: 2%;
   background-color: rgba(241, 243, 242, 0.95);
   color: #3d3d3d;
   font-size: 1em;
@@ -90,9 +85,8 @@ textarea {
   top: 0;
   left: 0;
   right: 0;
-  height: 100%;
-  opacity: 1;
-  transition: 0.15s opacity; }
+  height: 100px;
+ }
 
 .notes-container {
   max-width: 50em;
@@ -100,20 +94,21 @@ textarea {
   position: relative; }
 
 .content-container {
-  margin: 8em 0 8em 0;
+  margin: 2em 0 2em 0;
   background: rgba(241, 243, 242, 0.95);
   padding: 40px 50px 80px 50px; }
 
 .title, .subtitle {
   font-size: 2.30em;
-  margin: 0.85em 0;
+  margin: 0.45em 0;
   background: none;
   line-height: 1.65;
   font-family: 'Equity-Text-B', serif;
   text-align: justify; 
 }
 .subtitle {
-  font-size: 1.50em; 
+  font-size: 1.20em;
+  font-family: georgia;
 }
 
 .message {
@@ -131,12 +126,41 @@ textarea {
   opacity: .55;
   width: auto; }
 
+  .navigation{
+    position:relative;
+    background:#fff;
+    border-top: 1px solid #dedede;
+    border-bottom:1px solid #bbb;
+    padding: 10px;
+    z-index:10;
+    margin: 0;
+    margin-top:80px;
+  }
+  .navigation li{
+    display: inline-block;
+    margin: 0 10px;
+  }
+  .navigation a{
+    background:#fff;
+    color:#bbb;
+    padding: 5px 10px;
+  }
   </style>
 
+  <!-- Edit Styles Only -->
   <style>
   #layout-controls{
     position:relative;
     z-index: 10;
+  }
+  .content-block{
+    position:relative;
+  }
+  .block-controls{
+    position:absolute;
+    z-index: 10;
+    left: -100px;
+    top: 0;
   }
   </style>
 </head>
@@ -150,7 +174,8 @@ textarea {
     <button id="save">Save</button>
   </div>
 
-  <div id="background" class="background-image" style="background: url(http://www.ohthebooks.com/blog/wp-content/uploads/infinity-interior.jpg) 50% 50% / cover no-repeat fixed;"></div>
+  <div id="background" class="background-image" style="background: url(http://amazingpics.net/content/Abstract/Abstract%20Art%20396.jpg) 50% 50% / cover no-repeat fixed;"></div>
+  <ul id="navigation" class="navigation"></ul>
   <div class="notes-container">
     <form id="content-container" view="content-container" class="content-container" onsubmit="return false">
     </form>
@@ -161,6 +186,8 @@ textarea {
 <script src="js/save-as-file.js"></script>
 <script src="js/exporter.js"></script>
 <script src="js/layout-controls.js"></script>
+<script src="js/nav/config.js"></script>
+<script src="js/nav/navigation.js"></script>
 </body>
 
 
