@@ -54,6 +54,7 @@ var ExportNotes = (function(){
 		'</head>',
 		'<body>',
 			'<div class="background-image" style="' + Background() + '"></div>',
+			'<ul class="navigation" id="navigation">' + document.getElementById('navigation').innerHTML + '</ul>',
 			'<div class="notes-container">',
 				content_container_items.join(''),
 			'</div>',
